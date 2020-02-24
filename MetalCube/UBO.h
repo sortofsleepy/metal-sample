@@ -24,6 +24,8 @@ public:
     }
        
     
+    id<MTLBuffer> getBuffer(){ return buffer; }
+    
     template<typename T>
     void setData(T value){
        

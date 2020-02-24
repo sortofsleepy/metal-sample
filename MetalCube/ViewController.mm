@@ -170,7 +170,61 @@
 
 // Called whenever the view needs to render
 - (void)drawInMTKView:(nonnull MTKView *)view {
-    [_camera update:self.view.currentRenderPassDescriptor drawable:self.view.currentDrawable];
+    auto device = self.view.device;
+    auto renderPassDescriptor = self.view.currentRenderPassDescriptor;
+    
+    // TODO probably shouldn't be making a new command queue every time.
+    auto commandQueue = [self.view.device newCommandQueue];
+      
+    // =================== SET CLEAR COLOR ================== //
+    
+    //[_camera update:self.view.currentRenderPassDescriptor drawable:self.view.currentDrawable];
+    MTLClearColor color = MTLClearColor();
+    color.red = 0.0f;
+    color.green = 104.0 / 255.0;
+    color.blue = 55.0 / 255.0;
+    color.alpha = 1.0;
+    
+    renderPassDescriptor.colorAttachments[0].clearColor = color;
+       
+    // =================== SET PIPELINE  ================== //
+    // compile render pipeline
+    id <MTLLibrary> defaultLibrary = [device newDefaultLibrary];
+    id <MTLFunction> vertex_func = [defaultLibrary newFunctionWithName:@"cube_vertex"];
+    id <MTLFunction> fragment_func = [defaultLibrary newFunctionWithName:@"cube_fragment"];
+    
+    MTLRenderPipelineDescriptor * descrip = [[MTLRenderPipelineDescriptor alloc] init];
+    descrip.label = @"MyCapturedImagePipeline";
+    descrip.vertexFunction = vertex_func;
+    descrip.fragmentFunction =fragment_func;
+    descrip.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
+ 
+    
+    NSError * err = nil;
+    auto pipeline = [device newRenderPipelineStateWithDescriptor:descrip error:&err];
+    if (err != nil) {
+            NSLog(@"Error creating render pipeline state: %@",[err localizedFailureReason]);
+    }
+    
+    // =================== START RENDER  ================== //
+    
+  
+   
+    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    
+    [renderEncoder setRenderPipelineState:pipeline];
+    
+    [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
+    [renderEncoder setVertexBuffer:ubo->getBuffer() offset:0 atIndex:2];
+      
+    
+    [renderEncoder endEncoding];
+    
+    [commandBuffer presentDrawable:self.view.currentDrawable];
+    [commandBuffer commit];
+    
     
 }
 
