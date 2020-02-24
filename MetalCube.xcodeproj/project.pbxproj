@@ -8,12 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		086BC583240467CF00AEA4A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC582240467CF00AEA4A7 /* AppDelegate.m */; };
-		086BC586240467CF00AEA4A7 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC585240467CF00AEA4A7 /* SceneDelegate.m */; };
-		086BC589240467CF00AEA4A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC588240467CF00AEA4A7 /* ViewController.m */; };
+		086BC589240467CF00AEA4A7 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 086BC588240467CF00AEA4A7 /* ViewController.mm */; };
 		086BC58C240467CF00AEA4A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086BC58A240467CF00AEA4A7 /* Main.storyboard */; };
 		086BC58E240467D000AEA4A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 086BC58D240467D000AEA4A7 /* Assets.xcassets */; };
 		086BC591240467D000AEA4A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086BC58F240467D000AEA4A7 /* LaunchScreen.storyboard */; };
 		086BC594240467D000AEA4A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC593240467D000AEA4A7 /* main.m */; };
+		086BC59C240467ED00AEA4A7 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086BC59B240467EC00AEA4A7 /* ARKit.framework */; };
+		086BC5A0240467F500AEA4A7 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086BC59D240467F500AEA4A7 /* MetalPerformanceShaders.framework */; };
+		086BC5A1240467F500AEA4A7 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086BC59E240467F500AEA4A7 /* MetalKit.framework */; };
+		086BC5A2240467F500AEA4A7 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086BC59F240467F500AEA4A7 /* Metal.framework */; };
+		086BC5A82404681E00AEA4A7 /* Camera.metal in Sources */ = {isa = PBXBuildFile; fileRef = 086BC5A42404681E00AEA4A7 /* Camera.metal */; };
+		086BC5A92404681E00AEA4A7 /* MetalCam.mm in Sources */ = {isa = PBXBuildFile; fileRef = 086BC5A52404681E00AEA4A7 /* MetalCam.mm */; };
+		086BC5AD2404686F00AEA4A7 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC5AC2404686F00AEA4A7 /* SceneDelegate.m */; };
+		086BC5B024046A5A00AEA4A7 /* Cube.metal in Sources */ = {isa = PBXBuildFile; fileRef = 086BC5AF24046A5A00AEA4A7 /* Cube.metal */; };
+		086BC5B2240481E500AEA4A7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086BC5B1240481E500AEA4A7 /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,14 +29,25 @@
 		086BC581240467CF00AEA4A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		086BC582240467CF00AEA4A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		086BC584240467CF00AEA4A7 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		086BC585240467CF00AEA4A7 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		086BC587240467CF00AEA4A7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		086BC588240467CF00AEA4A7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		086BC588240467CF00AEA4A7 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		086BC58B240467CF00AEA4A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		086BC58D240467D000AEA4A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		086BC590240467D000AEA4A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		086BC592240467D000AEA4A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		086BC593240467D000AEA4A7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		086BC59B240467EC00AEA4A7 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		086BC59D240467F500AEA4A7 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		086BC59E240467F500AEA4A7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		086BC59F240467F500AEA4A7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		086BC5A42404681E00AEA4A7 /* Camera.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Camera.metal; sourceTree = "<group>"; };
+		086BC5A52404681E00AEA4A7 /* MetalCam.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalCam.mm; sourceTree = "<group>"; };
+		086BC5A62404681E00AEA4A7 /* MetalCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalCam.h; sourceTree = "<group>"; };
+		086BC5AC2404686F00AEA4A7 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		086BC5AE240469A700AEA4A7 /* Vbo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vbo.h; sourceTree = "<group>"; };
+		086BC5AF24046A5A00AEA4A7 /* Cube.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Cube.metal; sourceTree = "<group>"; };
+		086BC5B1240481E500AEA4A7 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		086BC5B3240484CB00AEA4A7 /* UBO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBO.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +55,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				086BC5A1240467F500AEA4A7 /* MetalKit.framework in Frameworks */,
+				086BC5A0240467F500AEA4A7 /* MetalPerformanceShaders.framework in Frameworks */,
+				086BC5A2240467F500AEA4A7 /* Metal.framework in Frameworks */,
+				086BC5B2240481E500AEA4A7 /* GLKit.framework in Frameworks */,
+				086BC59C240467ED00AEA4A7 /* ARKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +71,7 @@
 			children = (
 				086BC580240467CF00AEA4A7 /* MetalCube */,
 				086BC57F240467CF00AEA4A7 /* Products */,
+				086BC59A240467EC00AEA4A7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,19 +86,53 @@
 		086BC580240467CF00AEA4A7 /* MetalCube */ = {
 			isa = PBXGroup;
 			children = (
+				086BC5AA2404685600AEA4A7 /* delegates */,
+				086BC5A62404681E00AEA4A7 /* MetalCam.h */,
+				086BC5A52404681E00AEA4A7 /* MetalCam.mm */,
+				086BC5A42404681E00AEA4A7 /* Camera.metal */,
+				086BC587240467CF00AEA4A7 /* ViewController.h */,
+				086BC588240467CF00AEA4A7 /* ViewController.mm */,
+				086BC5AB2404686500AEA4A7 /* UI */,
+				086BC592240467D000AEA4A7 /* Info.plist */,
+				086BC593240467D000AEA4A7 /* main.m */,
+				086BC5AE240469A700AEA4A7 /* Vbo.h */,
+				086BC5AF24046A5A00AEA4A7 /* Cube.metal */,
+				086BC5B3240484CB00AEA4A7 /* UBO.h */,
+			);
+			path = MetalCube;
+			sourceTree = "<group>";
+		};
+		086BC59A240467EC00AEA4A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				086BC5B1240481E500AEA4A7 /* GLKit.framework */,
+				086BC59F240467F500AEA4A7 /* Metal.framework */,
+				086BC59E240467F500AEA4A7 /* MetalKit.framework */,
+				086BC59D240467F500AEA4A7 /* MetalPerformanceShaders.framework */,
+				086BC59B240467EC00AEA4A7 /* ARKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		086BC5AA2404685600AEA4A7 /* delegates */ = {
+			isa = PBXGroup;
+			children = (
 				086BC581240467CF00AEA4A7 /* AppDelegate.h */,
 				086BC582240467CF00AEA4A7 /* AppDelegate.m */,
 				086BC584240467CF00AEA4A7 /* SceneDelegate.h */,
-				086BC585240467CF00AEA4A7 /* SceneDelegate.m */,
-				086BC587240467CF00AEA4A7 /* ViewController.h */,
-				086BC588240467CF00AEA4A7 /* ViewController.m */,
+				086BC5AC2404686F00AEA4A7 /* SceneDelegate.m */,
+			);
+			path = delegates;
+			sourceTree = "<group>";
+		};
+		086BC5AB2404686500AEA4A7 /* UI */ = {
+			isa = PBXGroup;
+			children = (
 				086BC58A240467CF00AEA4A7 /* Main.storyboard */,
 				086BC58D240467D000AEA4A7 /* Assets.xcassets */,
 				086BC58F240467D000AEA4A7 /* LaunchScreen.storyboard */,
-				086BC592240467D000AEA4A7 /* Info.plist */,
-				086BC593240467D000AEA4A7 /* main.m */,
 			);
-			path = MetalCube;
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,10 +205,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				086BC589240467CF00AEA4A7 /* ViewController.m in Sources */,
+				086BC5B024046A5A00AEA4A7 /* Cube.metal in Sources */,
+				086BC5A82404681E00AEA4A7 /* Camera.metal in Sources */,
+				086BC589240467CF00AEA4A7 /* ViewController.mm in Sources */,
 				086BC583240467CF00AEA4A7 /* AppDelegate.m in Sources */,
+				086BC5AD2404686F00AEA4A7 /* SceneDelegate.m in Sources */,
+				086BC5A92404681E00AEA4A7 /* MetalCam.mm in Sources */,
 				086BC594240467D000AEA4A7 /* main.m in Sources */,
-				086BC586240467CF00AEA4A7 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
