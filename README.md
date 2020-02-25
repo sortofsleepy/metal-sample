@@ -5,6 +5,7 @@ simultanneously rendering the camera image from the back camera. It also shows h
 Notes 
 ====
 * Uses ARKit to obtain the camera image 
+* Uses MTKView instead of constructing everything manually.
 * Shows how to construct a cube manually 
 * Also shows how to render multiple items simultaneously. 
 * Note that there are some wrapper classes to make it simpler to remember how to use buffers for instance. 
