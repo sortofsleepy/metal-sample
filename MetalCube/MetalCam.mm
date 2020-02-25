@@ -134,6 +134,58 @@ static const float kImagePlaneVertexData[16] = {
 }
 
 
+-(void) updateWithEncoder:(id<MTLRenderCommandEncoder>)renderEncoder buffer:(id<MTLCommandBuffer>)commandBuffer descriptor:(MTLRenderPassDescriptor *)renderPassDescriptor drawable:(id<MTLDrawable>)currentDrawable{
+     if (!self.session) {
+         return;
+     }
+     
+     // if viewport hasn't been set to something other than 0, try to set the viewport
+     // values to be 0,0,<auto calcualted width>, <auto calculated height>
+     _viewport = [[UIScreen mainScreen] bounds];
+     
+     // update the camera image.
+     [self _updateCamera];
+     
+    
+     // Wait to ensure only kMaxBuffersInFlight are getting proccessed by any stage in the Metal
+     //   pipeline (App, Metal, Drivers, GPU, etc)
+     dispatch_semaphore_wait(self.inFlightSemaphore, DISPATCH_TIME_FOREVER);
+     
+     
+     // Add completion hander which signal _inFlightSemaphore when Metal and the GPU has fully
+     //   finished proccssing the commands we're encoding this frame.  This indicates when the
+     //   dynamic buffers, that we're writing to this frame, will no longer be needed by Metal
+     //   and the GPU.
+     __block dispatch_semaphore_t block_sema = self.inFlightSemaphore;
+     
+     // Retain our CVMetalTextureRefs for the duration of the rendering cycle. The MTLTextures
+     //   we use from the CVMetalTextureRefs are not valid unless their parent CVMetalTextureRefs
+     //   are retained. Since we may release our CVMetalTextureRef ivars during the rendering
+     //   cycle, we must retain them separately here.
+     CVBufferRef capturedImageTextureYRef = CVBufferRetain(_capturedImageTextureYRef);
+     CVBufferRef capturedImageTextureCbCrRef = CVBufferRetain(_capturedImageTextureCbCrRef);
+     
+     [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+         dispatch_semaphore_signal(block_sema);
+         CVBufferRelease(capturedImageTextureYRef);
+         CVBufferRelease(capturedImageTextureCbCrRef);
+     }];
+     
+     
+     // If we've gotten a renderPassDescriptor we can render to the drawable, otherwise we'll skip
+     // any rendering this frame because we have no drawable to draw to
+     if (renderPassDescriptor != nil) {
+         // DRAW PRIMATIVE
+     
+         [self _drawCapturedImageWithCommandEncoder:renderEncoder];
+         
+         
+     }else{
+         NSLog(@"Error - do not have render pass descriptor");
+     }
+}
+
+
 - (void)_drawCapturedImageWithCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder{
     if (_capturedImageTextureYRef == nil || _capturedImageTextureCbCrRef == nil) {
         //NSLog(@"Have not obtained image");

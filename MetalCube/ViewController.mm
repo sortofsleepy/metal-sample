@@ -74,6 +74,9 @@
     self.view.gestureRecognizers = gestureRecognizers;
 }
 
+/**
+ Build the main UBO that contains necessary data to construct a mock camera.
+ */
 - (void) setupCamera {
   
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -95,11 +98,17 @@
     uniforms.projection = projectionMatrix;
     uniforms.view = viewMatrix;
     uniforms.model = modelMatrix;
-    uniforms.color = 1.0f;
-    
+
     ubo = UBO::create(self.view.device);
     ubo->setData(uniforms);
     
+}
+
+
+
+- (void) updateCamera {
+    uniforms.appTime += 0.05;
+    ubo->update(uniforms);
 }
 
 - (void) generateCube {
@@ -145,7 +154,7 @@
     ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
     // turn on enviromental texturing.
-    
+    configuration.environmentTexturing = AREnvironmentTexturingAutomatic;
 
     
     
@@ -186,6 +195,9 @@
     
     // TODO probably shouldn't be making a new command queue every time.
     auto commandQueue = [self.view.device newCommandQueue];
+    
+    // update app time
+    [self updateCamera];
       
     // =================== SET CLEAR COLOR ================== //
     
@@ -219,14 +231,22 @@
     
     // =================== START RENDER  ================== //
     
+    // render camera
+    //[_camera update:self.view.currentRenderPassDescriptor drawable:self.view.currentDrawable];
   
+    
    
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     
+    
+    [_camera updateWithEncoder:renderEncoder
+                        buffer:commandBuffer
+                    descriptor:self.view.currentRenderPassDescriptor
+                      drawable:self.view.currentDrawable];
+    
     [renderEncoder setRenderPipelineState:pipeline];
     
-
  
     
     [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
@@ -239,13 +259,11 @@
 
     
     [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
-                              indexCount:(NSInteger)cubeIndices->getDataSize() / 3
+                              indexCount:(NSInteger)cubeIndices->getDataSize()
                                indexType:MTLIndexTypeUInt16
                              indexBuffer:cubeIndices->getBuffer()
                        indexBufferOffset:0];
-    //[renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3 instanceCount:1];
-       
-    
+ 
     
     [renderEncoder endEncoding];
     
@@ -255,10 +273,27 @@
     
 }
 
+
+
 #pragma mark - ARSessionDelegate
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     // Present an error message to the user
+    
+}
+
+
+- (void)session:(ARSession *)session didUpdateAnchors:(NSArray<__kindof ARAnchor *> *)anchors {
+    
+    for(NSInteger i = 0; i < anchors.count; ++i){
+    
+        ARAnchor * anchor = anchors[i];
+        
+        if([anchor isKindOfClass:[AREnvironmentProbeAnchor class]]){
+            NSLog(@"Found env probe");
+        }
+        
+    }
     
 }
 

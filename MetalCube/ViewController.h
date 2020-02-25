@@ -13,11 +13,11 @@
 #import "Vbo.h"
 #import "Ubo.h"
 
-struct CameraUniforms {
+struct DefaultUniforms {
     matrix_float4x4 projection;
     matrix_float4x4 view;
     matrix_float4x4 model;
-    float color;
+    float appTime;
 };
 
 
@@ -27,12 +27,15 @@ struct CameraUniforms {
     matrix_float4x4 viewMatrix;
     matrix_float4x4 modelMatrix;
     
-    CameraUniforms uniforms;
+    DefaultUniforms uniforms;
     UboRef ubo;
 }
 
 // generates necessary buffers for the cube.
 - (void) generateCube;
+
+// updates camera information. 
+- (void) updateCamera;
 
 // generates the necessary information for the camera information.
 - (void) setupCamera;
