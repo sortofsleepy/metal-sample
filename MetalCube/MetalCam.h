@@ -93,6 +93,11 @@ NS_ASSUME_NONNULL_BEGIN
 //! Updates the camera image on the plane. Pass in a renderpass descriptor from the View used to render the camera.
 - (void) update: (MTLRenderPassDescriptor*) renderPassDescriptor drawable:(id<MTLDrawable>) currentDrawable;
 
+- (void) updateWithEncoder:(id<MTLRenderCommandEncoder>)renderEncoder
+                buffer:(id<MTLCommandBuffer>) commandBuffer
+                descriptor:(MTLRenderPassDescriptor*) renderPassDescriptor
+                  drawable:(id<MTLDrawable>) currentDrawable;
+
 //! Builds textures from the camera pixel buffer of each frame.
 - (CVMetalTextureRef)_createTextureFromPixelBuffer:(CVPixelBufferRef)pixelBuffer pixelFormat:(MTLPixelFormat)pixelFormat planeIndex:(NSInteger)planeIndex;
 

@@ -11,27 +11,36 @@
 #import <MetalKit/MetalKit.h>
 #import <ARKit/ARKit.h>
 #import "Vbo.h"
-#import "Ubo.h"
+#import "UBO.h"
+#import "WorldMap.h"
 
-struct CameraUniforms {
+struct DefaultUniforms {
     matrix_float4x4 projection;
     matrix_float4x4 view;
     matrix_float4x4 model;
+    float appTime;
 };
 
 
 @interface ViewController : UIViewController{
-    VboRef cubeVerts,cubeIndices,cubeUvs;
+    VboRef cubeVerts,cubeIndices,cubeUvs,testVbo;
     matrix_float4x4 projectionMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float4x4 modelMatrix;
     
-    CameraUniforms uniforms;
+    DefaultUniforms uniforms;
+    
+    WorldMapRef map;
     UboRef ubo;
+    
+
 }
 
 // generates necessary buffers for the cube.
 - (void) generateCube;
+
+// updates camera information.
+- (void) updateCamera;
 
 // generates the necessary information for the camera information.
 - (void) setupCamera;

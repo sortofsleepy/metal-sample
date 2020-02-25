@@ -61,12 +61,13 @@
     
     [_camera setOrientation:self.view.window.windowScene.interfaceOrientation];
     
-    
     // generate geometry
     [self generateCube];
     
     // setup camera matrices and model matrix.
     [self setupCamera];
+    
+    map = WorldMap::create(session);
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     NSMutableArray *gestureRecognizers = [NSMutableArray array];
@@ -75,6 +76,9 @@
     self.view.gestureRecognizers = gestureRecognizers;
 }
 
+/**
+ Build the main UBO that contains necessary data to construct a mock camera.
+ */
 - (void) setupCamera {
   
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -90,25 +94,43 @@
     
     // build view matrix.
     GLKMatrix4 view = GLKMatrix4Identity;
-    view = GLKMatrix4Translate(view, 0, 0, -20);
+    view = GLKMatrix4Translate(view, 0, 0, -200);
     viewMatrix = convert<GLKMatrix4,matrix_float4x4>(view);
     
     uniforms.projection = projectionMatrix;
     uniforms.view = viewMatrix;
     uniforms.model = modelMatrix;
-    
+
     ubo = UBO::create(self.view.device);
     ubo->setData(uniforms);
     
+}
+
+
+
+- (void) updateCamera {
+    uniforms.appTime += 0.05;
+    ubo->update(uniforms);
 }
 
 - (void) generateCube {
     cubeVerts= Vbo::create(self.view.device);
     cubeUvs = Vbo::create(self.view.device);
     cubeIndices = Vbo::create(self.view.device);
+    testVbo = Vbo::create(self.view.device);
+    
+    std::vector<float> data = {
+         0.0,  1.0, 0.0,
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0
+    };
+
+
+    testVbo->bufferData(data);
+    
     
     std::vector<float> vertices = {
-        -10,10,10,0,10,10,10,10,10,-10,0,10,0,0,10,10,0,10,-10,-10,10,0,-10,10,10,-10,10,10,10,-10,0,10,-10,-10,10,-10,10,0,-10,0,0,-10,-10,0,-10,10,-10,-10,0,-10,-10,-10,-10,-10,-10,10,-10,-10,10,0,-10,10,10,-10,0,-10,-10,0,0,-10,0,10,-10,-10,-10,-10,-10,0,-10,-10,10,10,10,10,10,10,0,10,10,-10,10,0,10,10,0,0,10,0,-10,10,-10,10,10,-10,0,10,-10,-10,-10,10,-10,0,10,-10,10,10,-10,-10,10,0,0,10,0,10,10,0,-10,10,10,0,10,10,10,10,10,-10,-10,10,0,-10,10,10,-10,10,-10,-10,0,0,-10,0,10,-10,0,-10,-10,-10,0,-10,-10,10,-10,-10
+       -10,10,10,0,10,10,10,10,10,-10,0,10,0,0,10,10,0,10,-10,-10,10,0,-10,10,10,-10,10,10,10,-10,0,10,-10,-10,10,-10,10,0,-10,0,0,-10,-10,0,-10,10,-10,-10,0,-10,-10,-10,-10,-10,-10,10,-10,-10,10,0,-10,10,10,-10,0,-10,-10,0,0,-10,0,10,-10,-10,-10,-10,-10,0,-10,-10,10,10,10,10,10,10,0,10,10,-10,10,0,10,10,0,0,10,0,-10,10,-10,10,10,-10,0,10,-10,-10,-10,10,-10,0,10,-10,10,10,-10,-10,10,0,0,10,0,10,10,0,-10,10,10,0,10,10,10,10,10,-10,-10,10,0,-10,10,10,-10,10,-10,-10,0,0,-10,0,10,-10,0,-10,-10,-10,0,-10,-10,10,-10,-10
     };
     
     std::vector<float> uvs = {
@@ -116,7 +138,7 @@
     };
     
     
-    std::vector<float> indices = {
+    std::vector<uint16_t> indices = {
         0,3,4,0,4,1,1,4,5,1,5,2,3,6,7,3,7,4,4,7,8,4,8,5,9,12,13,9,13,10,10,13,14,10,14,11,12,15,16,12,16,13,13,16,17,13,17,14,18,21,22,18,22,19,19,22,23,19,23,20,21,24,25,21,25,22,22,25,26,22,26,23,27,30,31,27,31,28,28,31,32,28,32,29,30,33,34,30,34,31,31,34,35,31,35,32,36,39,40,36,40,37,37,40,41,37,41,38,39,42,43,39,43,40,40,43,44,40,44,41,45,48,49,45,49,46,46,49,50,46,50,47,48,51,52,48,52,49,49,52,53,49,53,50
     };
     
@@ -134,7 +156,7 @@
     ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
     // turn on enviromental texturing.
-    
+    configuration.environmentTexturing = AREnvironmentTexturingAutomatic;
 
     
     
@@ -175,6 +197,9 @@
     
     // TODO probably shouldn't be making a new command queue every time.
     auto commandQueue = [self.view.device newCommandQueue];
+    
+    // update app time
+    [self updateCamera];
       
     // =================== SET CLEAR COLOR ================== //
     
@@ -194,7 +219,7 @@
     id <MTLFunction> fragment_func = [defaultLibrary newFunctionWithName:@"cube_fragment"];
     
     MTLRenderPipelineDescriptor * descrip = [[MTLRenderPipelineDescriptor alloc] init];
-    descrip.label = @"MyCapturedImagePipeline";
+    descrip.label = @"Cube Pipeline";
     descrip.vertexFunction = vertex_func;
     descrip.fragmentFunction =fragment_func;
     descrip.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
@@ -208,19 +233,41 @@
     
     // =================== START RENDER  ================== //
     
-  
-   
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    
+    // render the camera image
+    [_camera updateWithEncoder:renderEncoder
+                        buffer:commandBuffer
+                    descriptor:self.view.currentRenderPassDescriptor
+                      drawable:self.view.currentDrawable];
+    
+    
+    // ========= START RENDERING CUBE ============== //
     
     [renderEncoder setRenderPipelineState:pipeline];
     
     [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
     [renderEncoder setVertexBuffer:ubo->getBuffer() offset:0 atIndex:2];
-      
+    
+
+    [renderEncoder setFragmentBuffer:ubo->getBuffer() offset:0 atIndex:0];
+    
+
+    
+    [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
+                              indexCount:(NSInteger)cubeIndices->getDataSize()
+                               indexType:MTLIndexTypeUInt16
+                             indexBuffer:cubeIndices->getBuffer()
+                       indexBufferOffset:0];
+ 
     
     [renderEncoder endEncoding];
+    
+    
+    
+    // ============ COMMIT AND PRESENT DRAWING ==================== ///
     
     [commandBuffer presentDrawable:self.view.currentDrawable];
     [commandBuffer commit];
@@ -228,10 +275,18 @@
     
 }
 
+
+
 #pragma mark - ARSessionDelegate
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     // Present an error message to the user
+    
+}
+
+
+- (void)session:(ARSession *)session didUpdateAnchors:(NSArray<__kindof ARAnchor *> *)anchors {
+    
     
 }
 

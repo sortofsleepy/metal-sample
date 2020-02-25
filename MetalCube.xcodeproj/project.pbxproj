@@ -48,6 +48,7 @@
 		086BC5AF24046A5A00AEA4A7 /* Cube.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Cube.metal; sourceTree = "<group>"; };
 		086BC5B1240481E500AEA4A7 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		086BC5B3240484CB00AEA4A7 /* UBO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBO.h; sourceTree = "<group>"; };
+		086BC5B42405B96100AEA4A7 /* WorldMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorldMap.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +99,7 @@
 				086BC5AE240469A700AEA4A7 /* Vbo.h */,
 				086BC5AF24046A5A00AEA4A7 /* Cube.metal */,
 				086BC5B3240484CB00AEA4A7 /* UBO.h */,
+				086BC5B42405B96100AEA4A7 /* WorldMap.h */,
 			);
 			path = MetalCube;
 			sourceTree = "<group>";
