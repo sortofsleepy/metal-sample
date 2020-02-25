@@ -13,6 +13,10 @@
 
 typedef std::shared_ptr<class UBO>UboRef;
 
+/**
+    A wrapper around the idea of uniform buffers.
+    TODO may not actually need a separate class but it might be nice for readability.
+ */
 class UBO {
 public:
     UBO(id<MTLDevice> device){
@@ -28,7 +32,6 @@ public:
     
     template<typename T>
     void setData(T value){
-       
         buffer = [device newBufferWithBytes:&value length:sizeof(T) options:MTLResourceCPUCacheModeDefaultCache];
     }
 protected:

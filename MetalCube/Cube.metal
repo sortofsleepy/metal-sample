@@ -25,6 +25,7 @@ struct CameraUniforms {
     matrix_float4x4 projection;
     matrix_float4x4 view;
     matrix_float4x4 model;
+    float color;
 };
 
 // vertex shader for the cube.
@@ -40,14 +41,14 @@ vertex float4 cube_vertex(const device packed_float3* vertex_array [[ buffer(0) 
     
     
     
-    return  float4(vertex_array[vid], 1.0); 
+    return  uniforms.projection * uniforms.view * uniforms.model * float4(vertex_array[vid], 1.0); 
     
     
 }
 
 
 // fragment shader for the cube
-fragment half4 cube_fragment() {
+fragment half4 cube_fragment(constant CameraUniforms &uniforms [[buffer(0)]]) {
   
-    return half4(1.0);
+    return half4(uniforms.color,1.0,0.0,1.0);
 }
