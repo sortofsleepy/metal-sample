@@ -11,7 +11,8 @@
 #import <MetalKit/MetalKit.h>
 #import <ARKit/ARKit.h>
 #import "Vbo.h"
-#import "Ubo.h"
+#import "UBO.h"
+#import "WorldMap.h"
 
 struct DefaultUniforms {
     matrix_float4x4 projection;
@@ -28,13 +29,17 @@ struct DefaultUniforms {
     matrix_float4x4 modelMatrix;
     
     DefaultUniforms uniforms;
+    
+    WorldMapRef map;
     UboRef ubo;
+    
+
 }
 
 // generates necessary buffers for the cube.
 - (void) generateCube;
 
-// updates camera information. 
+// updates camera information.
 - (void) updateCamera;
 
 // generates the necessary information for the camera information.

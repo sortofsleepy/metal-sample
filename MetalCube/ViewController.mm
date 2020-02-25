@@ -67,6 +67,8 @@
     // setup camera matrices and model matrix.
     [self setupCamera];
     
+    map = WorldMap::create(session);
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     NSMutableArray *gestureRecognizers = [NSMutableArray array];
     [gestureRecognizers addObject:tapGesture];
@@ -231,23 +233,19 @@
     
     // =================== START RENDER  ================== //
     
-    // render camera
-    //[_camera update:self.view.currentRenderPassDescriptor drawable:self.view.currentDrawable];
-  
-    
-   
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     
-    
+    // render the camera image
     [_camera updateWithEncoder:renderEncoder
                         buffer:commandBuffer
                     descriptor:self.view.currentRenderPassDescriptor
                       drawable:self.view.currentDrawable];
     
-    [renderEncoder setRenderPipelineState:pipeline];
     
- 
+    // ========= START RENDERING CUBE ============== //
+    
+    [renderEncoder setRenderPipelineState:pipeline];
     
     [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
@@ -267,6 +265,10 @@
     
     [renderEncoder endEncoding];
     
+    
+    
+    // ============ COMMIT AND PRESENT DRAWING ==================== ///
+    
     [commandBuffer presentDrawable:self.view.currentDrawable];
     [commandBuffer commit];
     
@@ -285,15 +287,6 @@
 
 - (void)session:(ARSession *)session didUpdateAnchors:(NSArray<__kindof ARAnchor *> *)anchors {
     
-    for(NSInteger i = 0; i < anchors.count; ++i){
-    
-        ARAnchor * anchor = anchors[i];
-        
-        if([anchor isKindOfClass:[AREnvironmentProbeAnchor class]]){
-            NSLog(@"Found env probe");
-        }
-        
-    }
     
 }
 
