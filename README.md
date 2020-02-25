@@ -1,6 +1,6 @@
 # metal-sample
 This is just a simple reference project for how to use Metal. All it does is create a Cube and place it in the middle of the scene while 
-simultanneously rendering the camera image from the back camera. 
+simultanneously rendering the camera image from the back camera. It also shows how to use uniform buffers and some shader work in making the cube rotate due to an incrementing value passed via the UBO.
 
 Notes 
 ====
