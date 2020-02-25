@@ -31,8 +31,8 @@ struct CameraUniforms {
 // index 1 = vertices
 // index 2 = uvs
 // index 3 uniform buffer
-vertex float4 cube_vertex(const device packed_float4* vertex_array [[ buffer(0) ]],
-                          const device packed_float4* uv_array [[ buffer(1) ]],
+vertex float4 cube_vertex(const device packed_float3* vertex_array [[ buffer(0) ]],
+                          const device packed_float3* uv_array [[ buffer(1) ]],
                           constant CameraUniforms &uniforms [[buffer(2)]],
                           
                            unsigned int vid [[ vertex_id ]]) {
@@ -40,7 +40,7 @@ vertex float4 cube_vertex(const device packed_float4* vertex_array [[ buffer(0) 
     
     
     
-    return vertex_array[vid];
+    return  float4(vertex_array[vid], 1.0); 
     
     
 }

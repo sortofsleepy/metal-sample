@@ -27,9 +27,17 @@ public:
         return VboRef(new Vbo(device));
     }
     
+    unsigned long getByteSize(){
+        return byteSize;
+    }
+    
+    unsigned long getDataSize() { return dataSize; }
+    
     //! Add data
     template<typename T>
     void bufferData(std::vector<T> &data){
+        byteSize = sizeof(T) * data.size();
+        dataSize = data.size();
         buffer = [device newBufferWithBytes:data.data() length:sizeof(T) * data.size() options:MTLResourceCPUCacheModeDefaultCache];
     }
     
@@ -37,6 +45,8 @@ public:
     id<MTLBuffer> getBuffer() { return buffer; }
     
 protected:
+    unsigned long byteSize;
+    unsigned long dataSize;
     id <MTLDevice> device;
     id <MTLBuffer> buffer;
     

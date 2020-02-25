@@ -106,6 +106,17 @@
     cubeVerts= Vbo::create(self.view.device);
     cubeUvs = Vbo::create(self.view.device);
     cubeIndices = Vbo::create(self.view.device);
+    testVbo = Vbo::create(self.view.device);
+    
+    std::vector<float> data = {
+         0.0,  1.0, 0.0,
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0
+    };
+
+
+    testVbo->bufferData(data);
+    
     
     std::vector<float> vertices = {
         -10,10,10,0,10,10,10,10,10,-10,0,10,0,0,10,10,0,10,-10,-10,10,0,-10,10,10,-10,10,10,10,-10,0,10,-10,-10,10,-10,10,0,-10,0,0,-10,-10,0,-10,10,-10,-10,0,-10,-10,-10,-10,-10,-10,10,-10,-10,10,0,-10,10,10,-10,0,-10,-10,0,0,-10,0,10,-10,-10,-10,-10,-10,0,-10,-10,10,10,10,10,10,10,0,10,10,-10,10,0,10,10,0,0,10,0,-10,10,-10,10,10,-10,0,10,-10,-10,-10,10,-10,0,10,-10,10,10,-10,-10,10,0,0,10,0,10,10,0,-10,10,10,0,10,10,10,10,10,-10,-10,10,0,-10,10,10,-10,10,-10,-10,0,0,-10,0,10,-10,0,-10,-10,-10,0,-10,-10,10,-10,-10
@@ -215,10 +226,19 @@
     
     [renderEncoder setRenderPipelineState:pipeline];
     
-    [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
+
+ 
+    
+    //[renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:testVbo->getBuffer() offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
     [renderEncoder setVertexBuffer:ubo->getBuffer() offset:0 atIndex:2];
-      
+    
+    //[renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle indexCount:cubeIndices->getDataSize() / 3 indexType:MTLIndexTypeUInt32 indexBuffer:cubeIndices->getBuffer() indexBufferOffset:0];
+    
+    [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3 instanceCount:1];
+       
+    
     
     [renderEncoder endEncoding];
     

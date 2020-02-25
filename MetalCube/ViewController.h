@@ -21,7 +21,7 @@ struct CameraUniforms {
 
 
 @interface ViewController : UIViewController{
-    VboRef cubeVerts,cubeIndices,cubeUvs;
+    VboRef cubeVerts,cubeIndices,cubeUvs,testVbo;
     matrix_float4x4 projectionMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float4x4 modelMatrix;
