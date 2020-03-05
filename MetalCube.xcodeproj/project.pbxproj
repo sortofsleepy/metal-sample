@@ -28,6 +28,7 @@
 /* Begin PBXFileReference section */
 		082CD18D241180D0000A362D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		082CD18F24118407000A362D /* Session.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
+		082CD1902411AE12000A362D /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		086BC57E240467CF00AEA4A7 /* MetalCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		086BC581240467CF00AEA4A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		086BC582240467CF00AEA4A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -105,6 +106,7 @@
 				086BC5B3240484CB00AEA4A7 /* UBO.h */,
 				086BC5B42405B96100AEA4A7 /* WorldMap.h */,
 				082CD18F24118407000A362D /* Session.h */,
+				082CD1902411AE12000A362D /* Mesh.h */,
 			);
 			path = MetalCube;
 			sourceTree = "<group>";

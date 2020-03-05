@@ -13,6 +13,7 @@
 #import "Vbo.h"
 #import "UBO.h"
 #import "WorldMap.h"
+#include "Mesh.h"
 
 struct DefaultUniforms {
     matrix_float4x4 projection;
@@ -28,6 +29,8 @@ struct BodyAnchorObject {
 
 @interface ViewController : UIViewController{
     VboRef cubeVerts,cubeIndices,cubeUvs,testVbo;
+    MeshRef plane;
+    
     matrix_float4x4 projectionMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float4x4 modelMatrix;
@@ -36,6 +39,8 @@ struct BodyAnchorObject {
     NSString * deviceName;
     WorldMapRef map;
     UboRef ubo;
+    
+  
     
     // all detected bodies in the scene.
     std::vector<BodyAnchorObject> bodies;

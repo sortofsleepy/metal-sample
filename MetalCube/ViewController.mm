@@ -128,6 +128,9 @@ NSString* deviceModelName() {
     cubeIndices = Vbo::create(self.view.device);
     testVbo = Vbo::create(self.view.device);
     
+    
+    plane = Mesh::create(self.view.device);
+    
     std::vector<float> data = {
          0.0,  1.0, 0.0,
         -1.0, -1.0, 0.0,
@@ -258,6 +261,7 @@ NSString* deviceModelName() {
  
     
     NSError * err = nil;
+  
     auto pipeline = [device newRenderPipelineStateWithDescriptor:descrip error:&err];
     if (err != nil) {
             NSLog(@"Error creating render pipeline state: %@",[err localizedFailureReason]);
