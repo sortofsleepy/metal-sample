@@ -21,6 +21,10 @@ struct DefaultUniforms {
     float appTime;
 };
 
+struct BodyAnchorObject {
+    NSUUID * id;
+    ARBodyAnchor* anchor;
+};
 
 @interface ViewController : UIViewController{
     VboRef cubeVerts,cubeIndices,cubeUvs,testVbo;
@@ -29,12 +33,17 @@ struct DefaultUniforms {
     matrix_float4x4 modelMatrix;
     
     DefaultUniforms uniforms;
-    
+    NSString * deviceName;
     WorldMapRef map;
     UboRef ubo;
     
+    // all detected bodies in the scene.
+    std::vector<BodyAnchorObject> bodies;
+    
 
 }
+
+-(bool) isIphone11;
 
 // generates necessary buffers for the cube.
 - (void) generateCube;

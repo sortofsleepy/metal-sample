@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		082CD18E241180D0000A362D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082CD18D241180D0000A362D /* SystemConfiguration.framework */; };
 		086BC583240467CF00AEA4A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BC582240467CF00AEA4A7 /* AppDelegate.m */; };
 		086BC589240467CF00AEA4A7 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 086BC588240467CF00AEA4A7 /* ViewController.mm */; };
 		086BC58C240467CF00AEA4A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086BC58A240467CF00AEA4A7 /* Main.storyboard */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		082CD18D241180D0000A362D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		082CD18F24118407000A362D /* Session.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
 		086BC57E240467CF00AEA4A7 /* MetalCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		086BC581240467CF00AEA4A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		086BC582240467CF00AEA4A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -60,6 +63,7 @@
 				086BC5A0240467F500AEA4A7 /* MetalPerformanceShaders.framework in Frameworks */,
 				086BC5A2240467F500AEA4A7 /* Metal.framework in Frameworks */,
 				086BC5B2240481E500AEA4A7 /* GLKit.framework in Frameworks */,
+				082CD18E241180D0000A362D /* SystemConfiguration.framework in Frameworks */,
 				086BC59C240467ED00AEA4A7 /* ARKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,6 +104,7 @@
 				086BC5AF24046A5A00AEA4A7 /* Cube.metal */,
 				086BC5B3240484CB00AEA4A7 /* UBO.h */,
 				086BC5B42405B96100AEA4A7 /* WorldMap.h */,
+				082CD18F24118407000A362D /* Session.h */,
 			);
 			path = MetalCube;
 			sourceTree = "<group>";
@@ -107,6 +112,7 @@
 		086BC59A240467EC00AEA4A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				082CD18D241180D0000A362D /* SystemConfiguration.framework */,
 				086BC5B1240481E500AEA4A7 /* GLKit.framework */,
 				086BC59F240467F500AEA4A7 /* Metal.framework */,
 				086BC59E240467F500AEA4A7 /* MetalKit.framework */,

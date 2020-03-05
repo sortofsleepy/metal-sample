@@ -9,6 +9,15 @@
 #import "ViewController.h"
 #include "MetalCam.h"
 
+#import <sys/utsname.h>
+
+NSString* deviceModelName() {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+}
+
+
 @interface ViewController () <MTKViewDelegate, ARSessionDelegate>
 
 @property(nonatomic,strong) MTKView *view;
@@ -67,7 +76,7 @@
     // setup camera matrices and model matrix.
     [self setupCamera];
     
-    map = WorldMap::create(session);
+    //map = WorldMap::create(session);
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     NSMutableArray *gestureRecognizers = [NSMutableArray array];
@@ -150,19 +159,42 @@
     
 }
 
+-(bool) isIphone11 {
+    if([deviceName isEqualToString: @"iPhone12,3"]){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
+    deviceName = deviceModelName();
+    
+    /**
+        If iPhone 11 class device, we use body tracking config. Otherwise we shift to use default configuration type.
+     */
+    
+    if(ARBodyTrackingConfiguration.isSupported){
+        ARBodyTrackingConfiguration * bodyconfig = [ARBodyTrackingConfiguration new];
+        bodyconfig.autoFocusEnabled = true;
+        bodyconfig.automaticSkeletonScaleEstimationEnabled = true;
+        bodyconfig.planeDetection = true;
+            
+                
+        [self.session runWithConfiguration:bodyconfig];
+    }else{
+        ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
-    // turn on enviromental texturing.
-    configuration.environmentTexturing = AREnvironmentTexturingAutomatic;
+        // turn on enviromental texturing.
+        configuration.environmentTexturing = AREnvironmentTexturingAutomatic;
+        [self.session runWithConfiguration:configuration];
+    }
+    
 
     
-    
-    
-    //[self.session runWithConfiguration:configuration];
-    [self.session runWithConfiguration:configuration];
+
 
     // setup orientation changes
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@sel name:<#(nullable NSNotificationName)#> object:<#(nullable id)#>]
@@ -245,23 +277,25 @@
     
     // ========= START RENDERING CUBE ============== //
     
-    [renderEncoder setRenderPipelineState:pipeline];
-    
-    [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
-    [renderEncoder setVertexBuffer:ubo->getBuffer() offset:0 atIndex:2];
-    
+   
+    /*
+     [renderEncoder setRenderPipelineState:pipeline];
+        
+        [renderEncoder setVertexBuffer:cubeVerts->getBuffer() offset:0 atIndex:0];
+        [renderEncoder setVertexBuffer:cubeUvs->getBuffer() offset:0 atIndex:1];
+        [renderEncoder setVertexBuffer:ubo->getBuffer() offset:0 atIndex:2];
+        
 
-    [renderEncoder setFragmentBuffer:ubo->getBuffer() offset:0 atIndex:0];
-    
-
-    
-    [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
-                              indexCount:(NSInteger)cubeIndices->getDataSize()
-                               indexType:MTLIndexTypeUInt16
-                             indexBuffer:cubeIndices->getBuffer()
-                       indexBufferOffset:0];
- 
+        [renderEncoder setFragmentBuffer:ubo->getBuffer() offset:0 atIndex:0];
+        
+        
+        [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
+                                  indexCount:(NSInteger)cubeIndices->getDataSize()
+                                   indexType:MTLIndexTypeUInt16
+                                 indexBuffer:cubeIndices->getBuffer()
+                           indexBufferOffset:0];
+     
+     */
     
     [renderEncoder endEncoding];
     
@@ -284,9 +318,73 @@
     
 }
 
+-(void)session:(ARSession*)session didAddAnchors:(nonnull NSArray<__kindof ARAnchor *> *)anchors{
+    
+
+
+    
+    for (ARAnchor* anchor in anchors) {
+     
+        // extract body stuff if supported. 
+        if(ARBodyTrackingConfiguration.isSupported){
+            if([anchor isKindOfClass:[ARBodyAnchor class]]){
+                ARBodyAnchor * bAnchor = (ARBodyAnchor*)anchor;
+                BodyAnchorObject _body;
+                _body.anchor = bAnchor;
+                _body.id = bAnchor.identifier;
+           
+                
+                // figure out if this is a new body or not
+                auto it = std::find_if(bodies.begin(),bodies.end(),[=](const BodyAnchorObject& obj){
+                    return (obj.id == bAnchor.identifier);
+                });
+                
+                if(it == bodies.end()){
+                    bodies.push_back(_body);
+                }
+                
+            }
+        }
+    
+        
+        
+        if([anchor isKindOfClass:[ARPlaneAnchor class]]){
+            NSLog(@"Plane anchor");
+        }else if([anchor isKindOfClass:[ARObjectAnchor class]]){
+            NSLog(@"Object anchor");
+        }else if([anchor isKindOfClass:[ARImageAnchor class]]){
+            NSLog(@"ImageAnchor");
+        }else if([anchor isKindOfClass:[ARFaceAnchor class]]){
+            NSLog(@"Face anchor" );
+        }else if([anchor isKindOfClass:[AREnvironmentProbeAnchor class]]){
+            NSLog(@"env probe" );
+        }
+    }
+    
+
+       
+    
+}
+
 
 - (void)session:(ARSession *)session didUpdateAnchors:(NSArray<__kindof ARAnchor *> *)anchors {
     
+    
+    auto anchorsCount = session.currentFrame.anchors.count;
+    
+    for (NSInteger index = 0; index < anchorsCount; index++) {
+        
+        ARAnchor *anchor = session.currentFrame.anchors[index];
+    
+        if(ARBodyTrackingConfiguration.isSupported){
+            if([anchor isKindOfClass:[ARBodyAnchor class]]){
+                     
+                     
+                                                               
+            }
+                 
+        }
+    }
     
 }
 
